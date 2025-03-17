@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda en Línea OOP</title>
+  <style>
+    .contenedor-principal {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    /* Estilos para el carrusel de productos */
+    .productos-slider {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 10px;
+      padding: 10px;
+      white-space: nowrap;
+    }
+    .producto {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      min-width: 250px;
+      scroll-snap-align: start;
+      background: white;
+    }
+    .producto__nombre {
+      color: #2c3e50;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .carrito-tabla {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .carrito-tabla th,
+    .carrito-tabla td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .boton-primario {
+      background-color: #3498db;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .boton-informacion {
+      margin-top: 20px;
+      background-color: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor-principal">
+    <!-- Sección de administración de productos -->
+    <section aria-label="Administración de productos">
+      <h2>Gestión de Productos</h2>
+      <form id="formProducto">
+        <input type="text" id="nombre" placeholder="Nombre" required>
+        <input type="number" id="precio" placeholder="Precio" required>
+        <input type="number" id="stock" placeholder="Stock" required>
+        <button type="button" class="boton-primario" onclick="productoUI.agregarProducto()">
+          Agregar Producto
+        </button>
+      </form>
+    </section>
+
+    <!-- Sección de lista de productos -->
+    <section aria-label="Lista de productos">
+      <h2>Productos Disponibles</h2>
+      <input type="text" id="buscar" placeholder="Buscar productos..." onkeyup="productoUI.filtrarProductos()">
+      <div id="lista-productos" class="productos-slider"></div>
+    </section>
+
+    <!-- Sección del carrito de compras -->
+    <section aria-label="Carrito de compras">
+      <h2>Carrito de Compras</h2>
+      <div id="contenido-carrito"></div>
+    </section>
+
+    <!-- Botón para redirigir a la página de información -->
+    <button type="button" class="boton-primario boton-informacion" onclick="window.location.href='descripcion.html'">
+      Ver Información de Desarrollo
+    </button>
+  </div>
+
+  <script>
+    // Clase Producto: define un producto de la tienda.
+    class Producto {
+      constructor(nombre, precio, stock) {
+        this.nombre = nombre;
+        this.precio = parseFloat(precio);
+        this.stock = parseInt(stock);
+      }
+    }
+
+    // Clase Carrito: almacena los productos agregados junto con su cantidad.
+    class Carrito {
+      constructor() {
+        // Se almacenarán objetos con la forma: { producto: Producto, cantidad: number }
+        this.items = [];
+      }
+
+      // Agrega una unidad del producto al carrito (si hay stock disponible).
+      agregarProducto(producto) {
+        if (producto.stock > 0) {
+          const itemExistente = this.items.find(item => item.producto.nombre === producto.nombre);
+          if (itemExistente) {
+            itemExistente.cantidad++;
+          } else {
+            this.items.push({ producto: producto, cantidad: 1 });
+          }
+          producto.stock--; // Reduce el stock en la lista de productos.
+        } else {
+          alert("Stock agotado");
+        }
+      }
+
+      // Quita una unidad del producto del carrito.
+      quitarProducto(producto) {
+        const itemExistente = this.items.find(item => item.producto.nombre === producto.nombre);
+        if (itemExistente) {
+          itemExistente.cantidad--;
+          producto.stock++; // Devuelve una unidad al stock.
+          if (itemExistente.cantidad <= 0) {
+            // Si la cantidad llega a cero, se elimina el producto del carrito.
+            this.items = this.items.filter(item => item.producto.nombre !== producto.nombre);
+          }
+        }
+      }
+
+      // Elimina completamente el producto del carrito y devuelve todas sus unidades al stock.
+      eliminarProducto(producto) {
+        const itemExistente = this.items.find(item => item.producto.nombre === producto.nombre);
+        if (itemExistente) {
+          producto.stock += itemExistente.cantidad; // Devuelve todas las unidades al stock.
+          this.items = this.items.filter(item => item.producto.nombre !== producto.nombre);
+        }
+      }
+
+      // Calcula el total del carrito (precio * cantidad de cada producto).
+      calcularTotal() {
+        return this.items.reduce((total, item) => total + (item.producto.precio * item.cantidad), 0);
+      }
+    }
+
+    // Clase ProductoUI: maneja la interfaz y la interacción del usuario.
+    class ProductoUI {
+      constructor() {
+        this.productos = [];
+        this.carrito = new Carrito();
+      }
+
+      // Agrega un producto a la lista de productos.
+      agregarProducto() {
+        const nombre = document.getElementById('nombre').value;
+        const precio = document.getElementById('precio').value;
+        const stock = document.getElementById('stock').value;
+
+        if (nombre && precio && stock) {
+          const nuevoProducto = new Producto(nombre, precio, stock);
+          this.productos.push(nuevoProducto);
+          this.actualizarVista();
+          this.limpiarFormulario();
+        }
+      }
+
+      // Filtra los productos según el valor ingresado.
+      filtrarProductos() {
+        const filtro = document.getElementById('buscar').value.toLowerCase();
+        const productosFiltrados = this.productos.filter(p => p.nombre.toLowerCase().includes(filtro));
+        this.mostrarProductos(productosFiltrados);
+      }
+
+      // Muestra los productos disponibles en el contenedor correspondiente.
+      mostrarProductos(listaProductos) {
+        const contenedor = document.getElementById('lista-productos');
+        contenedor.innerHTML = listaProductos.map(prod => `
+          <div class="producto">
+            <h3 class="producto__nombre">${prod.nombre}</h3>
+            <p>Precio: $${prod.precio}</p>
+            <p>Stock: ${prod.stock}</p>
+            <button class="boton-primario" onclick="productoUI.agregarAlCarrito('${prod.nombre}')">
+              Agregar al carrito
+            </button>
+          </div>
+        `).join('');
+      }
+
+      // Agrega una unidad del producto al carrito.
+      agregarAlCarrito(nombreProducto) {
+        const producto = this.productos.find(p => p.nombre === nombreProducto);
+        if (producto) {
+          this.carrito.agregarProducto(producto);
+          this.actualizarVista();
+          this.actualizarVistaCarrito();
+        }
+      }
+
+      // Agrega otra unidad del producto ya existente en el carrito.
+      agregarMas(nombreProducto) {
+        const producto = this.productos.find(p => p.nombre === nombreProducto);
+        if (producto) {
+          this.carrito.agregarProducto(producto);
+          this.actualizarVista();
+          this.actualizarVistaCarrito();
+        }
+      }
+
+      // Quita una unidad del producto del carrito.
+      quitarUno(nombreProducto) {
+        const producto = this.productos.find(p => p.nombre === nombreProducto);
+        if (producto) {
+          this.carrito.quitarProducto(producto);
+          this.actualizarVista();
+          this.actualizarVistaCarrito();
+        }
+      }
+
+      // Elimina el producto completamente del carrito.
+      eliminarProducto(nombreProducto) {
+        const producto = this.productos.find(p => p.nombre === nombreProducto);
+        if (producto) {
+          this.carrito.eliminarProducto(producto);
+          this.actualizarVista();
+          this.actualizarVistaCarrito();
+        }
+      }
+
+      // Actualiza la vista de los productos y del carrito.
+      actualizarVista() {
+        this.mostrarProductos(this.productos);
+        this.actualizarVistaCarrito();
+      }
+
+      // Muestra el contenido del carrito en forma de tabla, incluyendo los botones de acción.
+      actualizarVistaCarrito() {
+        const contenedor = document.getElementById('contenido-carrito');
+        contenedor.innerHTML = `
+          <table class="carrito-tabla">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${this.carrito.items.map(item => `
+                <tr>
+                  <td>${item.producto.nombre}</td>
+                  <td>$${item.producto.precio}</td>
+                  <td>${item.cantidad}</td>
+                  <td>
+                    <button class="boton-primario" onclick="productoUI.agregarMas('${item.producto.nombre}')">+</button>
+                    <button class="boton-primario" onclick="productoUI.quitarUno('${item.producto.nombre}')">-</button>
+                    <button class="boton-primario" onclick="productoUI.eliminarProducto('${item.producto.nombre}')">Eliminar</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>Total:</td>
+                <td colspan="3">$${this.carrito.calcularTotal()}</td>
+              </tr>
+            </tfoot>
+          </table>
+        `;
+      }
+
+      // Limpia el formulario de ingreso de productos.
+      limpiarFormulario() {
+        document.getElementById('formProducto').reset();
+      }
+    }
+
+    // Instanciamos la clase ProductoUI.
+    const productoUI = new ProductoUI();
+
+    // Inserción automática de 6 productos al cargar la página.
+    document.addEventListener("DOMContentLoaded", function() {
+      const productosAutomaticos = [
+        new Producto("Sopa Nissin Queso", 16, 10),
+        new Producto("Salsa Botanera", 25, 15),
+        new Producto("Refresco 2L", 38, 8),
+        new Producto("Sabritas Adobadas", 18, 20),
+        new Producto("Chocolate CarlosV", 16, 12),
+        new Producto("Chicle", 1, 30)
+      ];
+
+      productosAutomaticos.forEach(producto => {
+        productoUI.productos.push(producto);
+      });
+
+      productoUI.actualizarVista();
+    });
+  </script>
+</body>
+</html>
