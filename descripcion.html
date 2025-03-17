@@ -73,6 +73,7 @@
       display: inline-block;
       transition: background-color 0.3s ease;
     }
+    /*Boton para regresar a la pagina principal*/
     .boton-volver:hover {
       background-color: #3498db;
     }
@@ -137,6 +138,122 @@
     <!-- Botón de volver -->
     <a href="index.html" class="boton-volver" aria-label="Volver a la página principal">Volver a Tienda</a>
     <h1>Información de Desarrollo de Software</h1>
+
+    <!-- Secciones del slider -->
+    <section class="seccion-informacion active" aria-labelledby="titulo-5-1">
+      <h2 id="titulo-5-1">5.1 Elementos de la programación orientada a objetos</h2>
+      <p>La POO (Programación Orientada a Objetos) es un paradigma de programación que utiliza objetos como unidades básicas. Los cuatro principios fundamentales son:</p>
+      <ul>
+        <li><strong>Encapsulamiento:</strong> Agrupa datos y funciones en una unidad.</li>
+        <li><strong>Herencia:</strong> Permite que una clase derive de otra, reutilizando código.</li>
+        <li><strong>Polimorfismo:</strong> Permite que objetos de diferentes tipos sean tratados de manera uniforme.</li>
+        <li><strong>Abstracción:</strong> Oculta la complejidad mostrando solo lo esencial.</li>
+      </ul>
+      <textarea class="codigo-ejemplo" readonly>
+// Ejemplo de herencia en JavaScript
+class Animal {
+    constructor(nombre) {
+        this.nombre = nombre;
+    }
+    hablar() {
+        console.log(`${this.nombre} hace un sonido.`);
+    }
+}
+class Perro extends Animal {
+    hablar() {
+        console.log(`${this.nombre} ladra.`);
+    }
+}
+const miPerro = new Perro("Firulais");
+miPerro.hablar(); // Salida: Firulais ladra.
+      </textarea>
+    </section>
+
+    <section class="seccion-informacion" aria-labelledby="titulo-5-2">
+      <h2 id="titulo-5-2">5.2 Creación de clases y componentes</h2>
+      <p>Las clases permiten definir estructuras reutilizables. En frameworks modernos como React, los componentes son piezas modulares de UI que encapsulan lógica y presentación.</p>
+      <textarea class="codigo-ejemplo" readonly>
+// Componente funcional en React
+function ProductoCard({ nombre, precio }) {
+    return (
+        <div className="producto-card">
+            <h3>{nombre}</h3>
+            <p>Precio: ${precio}</p>
+        </div>
+    );
+}
+// Uso del componente
+<ProductoCard nombre="Laptop" precio={1200} />
+      </textarea>
+    </section>
+
+    <section class="seccion-informacion" aria-labelledby="titulo-5-3">
+      <h2 id="titulo-5-3">5.3 Exposición de métodos y propiedades</h2>
+      <p>Los métodos públicos pueden ser accedidos desde fuera de la clase, mientras que los privados están restringidos al ámbito interno.</p>
+      <textarea class="codigo-ejemplo" readonly>
+class Banco {
+    #saldo = 0; // Propiedad privada
+    depositar(cantidad) {
+        if (cantidad > 0) {
+            this.#saldo += cantidad;
+            console.log(`Depósito exitoso. Saldo: ${this.#saldo}`);
+        } else {
+            console.log("Cantidad inválida.");
+        }
+    }
+    consultarSaldo() {
+        return this.#saldo;
+    }
+}
+const cuenta = new Banco();
+cuenta.depositar(500); // Salida: Depósito exitoso. Saldo: 500
+console.log(cuenta.consultarSaldo()); // Salida: 500
+      </textarea>
+    </section>
+
+    <section class="seccion-informacion" aria-labelledby="titulo-5-4">
+      <h2 id="titulo-5-4">5.4 Lenguajes de marcas y estándares web</h2>
+      <p>HTML es el lenguaje base para estructurar contenido web. Los estándares W3C aseguran la compatibilidad entre navegadores.</p>
+      <textarea class="codigo-ejemplo" readonly>
+<!-- Ejemplo de HTML semántico -->
+<article>
+    <header>
+        <h1>Título del artículo</h1>
+        <p>Publicado el <time datetime="2023-10-01">1 de octubre de 2023</time></p>
+    </header>
+    <section>
+        <p>Contenido del artículo...</p>
+    </section>
+    <footer>
+        <p>Autor: Nombre del autor</p>
+    </footer>
+</article>
+      </textarea>
+    </section>
+
+    <section class="seccion-informacion" aria-labelledby="titulo-5-5">
+      <h2 id="titulo-5-5">5.5 Hojas de estilo CSS</h2>
+      <p>CSS permite estilizar elementos HTML. Las variables CSS y Flexbox/Grid son herramientas poderosas para diseño responsivo.</p>
+      <textarea class="codigo-ejemplo" readonly>
+/* Variables CSS */
+:root {
+    --color-primario: #3498db;
+    --color-secundario: #2ecc71;
+}
+body {
+    background-color: var(--color-primario);
+    color: white;
+}
+/* Diseño con Flexbox */
+.contenedor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+      </textarea>
+    </section>
+
+    <!-- Controles del slider -->
     <div class="slider-controls">
       <button class="slider-button" onclick="changeSlide(0)">Sección 1</button>
       <button class="slider-button" onclick="changeSlide(1)">Sección 2</button>
@@ -145,10 +262,19 @@
       <button class="slider-button" onclick="changeSlide(4)">Sección 5</button>
     </div>
   </div>
+
   <script>
+    /**
+     * Alterna entre modo oscuro y claro.
+     */
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
     }
+
+    /**
+     * Cambia la sección visible en el slider.
+     * @param {number} index - Índice de la sección a mostrar.
+     */
     function changeSlide(index) {
       const sections = document.querySelectorAll('.seccion-informacion');
       sections.forEach((section, i) => {
