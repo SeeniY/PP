@@ -51,6 +51,7 @@
     resize: vertical;
     overflow: auto;
     transition: background-color 0.3s ease;
+    field-sizing: content;
   }
   /* Botones */
   .boton-volver,
