@@ -1,0 +1,124 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  /* Estilos generales */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #000;
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  h1 {
+    color: #3498db;
+    padding: 10px;
+    text-align: center;
+  }
+  h2 {
+    color: #27ae60;
+    margin-bottom: 10px;
+  }
+  .contenedor-informacion {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+  }
+  .seccion-informacion {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    display: none; /* Ocultar todas las secciones por defecto */
+  }
+  .seccion-informacion.active {
+    display: block; /* Mostrar solo la sección activa */
+  }
+  .codigo-ejemplo {
+    width: 100%;
+    height: auto;
+    min-height: 200px;
+    padding: 10px;
+    font-family: monospace;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    resize: vertical;
+    overflow: auto;
+    transition: background-color 0.3s ease;
+  }
+  /* Botones */
+  .boton-volver,
+  .boton-primario {
+    margin: 20px 5px 20px 0;
+    padding: 10px 20px;
+    background-color: #27ae60;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+  }
+  /*Boton para regresar a la pagina principal*/
+  .boton-volver:hover {
+    background-color: #3498db;
+  }
+  .slider-button:active,
+  .boton-primario:active {
+    transform: scale(0.9);
+  }
+  .boton-primario:hover {
+    background-color: #2a3338;
+  }
+  /* Slider */
+  .slider-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .slider-button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .slider-button:hover {
+    background-color: #2980b9;
+  }
+  /* Modo oscuro */
+  .dark-mode {
+    background-color: #333;
+    color: #fff;
+  }
+  .dark-mode h1,
+  .dark-mode h2,
+  .dark-mode p,
+  .dark-mode a,
+  .dark-mode button {
+    color: #fff;
+  }
+  .dark-mode .seccion-informacion {
+    background-color: #555;
+  }
+  .dark-mode .codigo-ejemplo {
+    background-color: #444;
+  }
+  .dark-mode .boton-volver,
+  .dark-mode .boton-primario {
+    background-color: #555;
+  }
+  .dark-mode .boton-volver:hover,
+  .dark-mode .boton-primario:hover {
+    background-color: #444;
+  }
