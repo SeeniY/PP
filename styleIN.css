@@ -1,41 +1,125 @@
-.contenedor-principal {
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+  }
+
+  .contenedor-principal {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
   }
+
+  h2 {
+    color: #2c3e50;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
   /* Estilos para el carrusel de productos */
   .productos-slider {
     display: flex;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 10px;
+    gap: 20px;
     padding: 10px;
     white-space: nowrap;
+    scroll-behavior: smooth;
   }
+
   .producto {
-    border: 1px solid #ddd;
+    background-color: white;
     border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    min-width: 250px;
-    scroll-snap-align: start;
-    background: white;
+    width: 250px;
+    text-align: center;
+    transition: transform 0.3s ease;
   }
+
+  .producto:hover {
+    transform: translateY(-10px);
+  }
+
   .producto__nombre {
     color: #2c3e50;
     font-size: 1.2em;
     margin-bottom: 10px;
+    font-weight: bold;
   }
+
+  .producto p {
+    color: #7f8c8d;
+    margin: 5px 0;
+  }
+
+  .producto button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .producto button:hover {
+    background-color: #2980b9;
+  }
+
+  /* Estilos para el formulario de gestión de productos */
+  form input {
+    padding: 6px;
+    margin: 5px 0;
+    width: 20%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+  }
+
+  form button {
+    background-color: #27ae60;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  form button:hover {
+    background-color: #2ecc71;
+  }
+
+  /* Estilos para la tabla del carrito */
   .carrito-tabla {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background-color: #fff;
   }
+
   .carrito-tabla th,
   .carrito-tabla td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    font-size: 1em;
   }
+
+  .carrito-tabla th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+  }
+
+  .carrito-tabla td {
+    color: #7f8c8d;
+  }
+
+  /* Estilos para los botones del carrito */
   .boton-primario {
     background-color: #3498db;
     color: white;
@@ -44,8 +128,41 @@
     border-radius: 4px;
     cursor: pointer;
     margin: 5px;
+    transition: background-color 0.3s;
   }
+
+  .boton-primario:hover {
+    background-color: #2980b9;
+  }
+
   .boton-informacion {
-    margin-top: 20px;
     background-color: #27ae60;
+  }
+
+  .boton-informacion:hover {
+    background-color: #2ecc71;
+  }
+
+  /* Estilos para el botón de información */
+  button[type="button"] {
+    left: auto;
+    width: 20%;
+    margin: 20px auto;
+  }
+
+  /* Media queries para mejorar la responsividad */
+  @media screen and (max-width: 768px) {
+    .productos-slider {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .producto {
+      width: 90%;
+      margin-bottom: 15px;
+    }
+
+    .carrito-tabla th, .carrito-tabla td {
+      font-size: 0.9em;
+    }
   }
