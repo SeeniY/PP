@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tienda en Línea</title>
+  <title>Tienda en Línea OOP</title>
   <link rel="stylesheet" href="styleIN.css">
 </head>
 <body>
@@ -98,10 +98,14 @@
       calcularTotal() {
         return this.items.reduce((total, item) => total + (item.producto.precio * item.cantidad), 0);
       }
+      vaciar() {
+        this.items = [];
+      }
     }
 
     // Clase ProductoUI: maneja la interfaz y la interacción del usuario.
     class ProductoUI {
+      
       constructor() {
         this.productos = [];
         this.carrito = new Carrito();
@@ -221,6 +225,11 @@
                 <td>Total:</td>
                 <td colspan="3">$${this.carrito.calcularTotal()}</td>
               </tr>
+              <tr>
+                <td colspan="4" style="text-align: center;">
+                  <button class="boton-primario" onclick="productoUI.comprarTodo()">Comprar Todo</button>
+                </td>
+              </tr>
             </tfoot>
           </table>
         `;
@@ -229,6 +238,16 @@
       // Limpia el formulario de ingreso de productos.
       limpiarFormulario() {
         document.getElementById('formProducto').reset();
+      }
+      comprarTodo() {
+        if (this.carrito.items.length === 0) {
+          alert("El carrito está vacío.");
+          return;
+        }
+        const total = this.carrito.calcularTotal();
+        alert(`¡Compra realizada con éxito! Total: $${total}`);
+        this.carrito.vaciar();
+        this.actualizarVistaCarrito();
       }
     }
 
