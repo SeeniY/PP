@@ -1,10 +1,11 @@
 /* Estilos generales */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-  }
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
 
   .contenedor-principal {
     max-width: 1200px;
@@ -17,9 +18,10 @@ body {
     font-size: 1.8em;
     margin-bottom: 20px;
     text-align: center;
+    transition: color 0.3s;
   }
 
-  /* Estilos para el carrusel de productos */
+  /* Estilos de como se muestra los productos */
   .productos-slider {
     display: flex;
     overflow-x: auto;
@@ -166,3 +168,87 @@ body {
       font-size: 0.9em;
     }
   }
+  /* Modo oscuro */
+body.dark-mode {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+body.dark-mode h2 {
+  color: #ffffff;
+}
+
+body.dark-mode .producto {
+  background-color: #2d2d2d;
+  border-color: #404040;
+}
+
+body.dark-mode .producto__nombre {
+  color: #ffffff;
+}
+
+body.dark-mode .producto p {
+  color: #bdc3c7;
+}
+
+body.dark-mode .producto button {
+  background-color: #4a5568;
+  color: white;
+}
+
+body.dark-mode .producto button:hover {
+  background-color: #2d3748;
+}
+
+body.dark-mode form input {
+  background-color: #3c3c3c;
+  color: #ffffff;
+  border-color: #555555;
+}
+
+body.dark-mode form button {
+  background-color: #2e7d32;
+  color: white;
+}
+
+body.dark-mode form button:hover {
+  background-color: #1b5e20;
+}
+
+body.dark-mode .carrito-tabla {
+  background-color: #2d2d2d;
+  color: #ffffff;
+}
+
+body.dark-mode .carrito-tabla th {
+  background-color: #404040;
+  color: white;
+}
+
+body.dark-mode .carrito-tabla td {
+  color: #e0e0e0;
+}
+
+body.dark-mode .boton-primario {
+  background-color: #4a5568;
+  color: white;
+}
+
+body.dark-mode .boton-primario:hover {
+  background-color: #2d3748;
+}
+
+body.dark-mode .boton-informacion {
+  background-color: #2e7d32;
+}
+
+body.dark-mode .boton-informacion:hover {
+  background-color: #1b5e20;
+}
+
+/* Estilos para los botones de modo oscuro e informacion */
+.controles-superiores {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
